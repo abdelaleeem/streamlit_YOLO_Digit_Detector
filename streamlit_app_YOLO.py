@@ -119,7 +119,7 @@ if uploaded_file:
             video_path = tmp.name
 
     # Download the YOLO model from Google Drive
-    model_url = "https://drive.google.com/file/d/1sIZedSrlG63U2ixjzqAMP7eMXnKbk3i7/view?usp=drive_link"  # Google Drive ID
+    model_url = "https://drive.google.com/file/d/1sIZedSrlG63U2ixjzqAMP7eMXnKbk3i7/"  # Google Drive ID
     model_path = "best_model.pt"
     gdown.download(model_url, model_path, quiet=False)
 
