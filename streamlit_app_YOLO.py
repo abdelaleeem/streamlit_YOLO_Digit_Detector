@@ -5,6 +5,8 @@ import pandas as pd
 from ultralytics import YOLO
 from datetime import datetime
 import tempfile
+import seaborn as sns
+import gdown
 
 # === Class ID to Character Mapping ===
 class_map = {
@@ -12,7 +14,7 @@ class_map = {
     6: '4', 7: '5', 8: '6', 9: '7', 10: '8', 11: '9'
 }
 # === Removing Outliers===
-def remove_outliers_iqr(df,  y_col):
+def remove_outliers_iqr(df, y_col):
     # Compute Q1 (25th percentile) and Q3 (75th percentile)
     Q1 = df[y_col].quantile(0.15)
     Q3 = df[y_col].quantile(0.85)
@@ -116,7 +118,13 @@ if uploaded_file:
             tmp.write(uploaded_file.read())
             video_path = tmp.name
 
-    model = YOLO("best (3).pt")  # Update path if needed
+    # Download the YOLO model from Google Drive
+    model_url = "https://drive.google.com/uc?id=1sIZedSrlG63U2ixjzqAMP7eMXnKbk3i7"  # Google Drive ID
+    model_path = "best_model.pt"
+    gdown.download(model_url, model_path, quiet=False)
+
+    # Load the model
+    model = YOLO(model_path)
 
     frames = extract_frames(video_path, frame_interval=frame_interval)
     results = predict_digits(model, frames)
@@ -126,7 +134,8 @@ if uploaded_file:
     df["prediction"] = pd.to_numeric(df["prediction"], errors="coerce")
     df = df.dropna(subset=["prediction"])  # Optional but recommended
     df = remove_outliers_iqr(df, "prediction")
-    df = df.drop(columns = "has_decimal")
+    df = df.drop(columns="has_decimal")
+    sns.histplot(df["prediction"], kde=True)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     excel_path = f"digit_predictions_{timestamp}.xlsx"
