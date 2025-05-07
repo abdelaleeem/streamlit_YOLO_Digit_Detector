@@ -1,5 +1,5 @@
 streamlit==1.44.1
-opencv-python-headless==4.11.0
+cv2==4.11.0
 pandas==2.2.3
 ultralytics==8.3.113
 seaborn==0.13.2
