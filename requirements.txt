@@ -1,0 +1,7 @@
+streamlit==1.44.1
+opencv-python-headless==4.11.0
+pandas==2.2.3
+ultralytics==8.3.113
+seaborn==0.13.2
+gdown==5.2.0
+openpyxl==3.1.5
