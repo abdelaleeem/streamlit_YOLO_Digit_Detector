@@ -141,8 +141,10 @@ if uploaded_file:
     # === New filtering: Keep only floats with exactly one decimal place ===
     df = df[df["prediction"].apply(is_one_decimal_float)]
     
-    sns.histplot(df["prediction"] , kde = True)
-    plt.show()
+    fig, ax = plt.subplots()
+    sns.histplot(df["prediction"], kde=True, ax=ax)
+    st.pyplot(fig)
+    
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     excel_path = f"digit_predictions_{timestamp}.xlsx"
     df.to_excel(excel_path, index=False)
