@@ -7,7 +7,7 @@ from datetime import datetime
 import tempfile
 import seaborn as sns
 import gdown
-
+import matplotlib.pyplot as plt
 # === Class ID to Character Mapping ===
 class_map = {
     0: '-', 1: '.', 2: '0', 3: '1', 4: '2', 5: '3',
