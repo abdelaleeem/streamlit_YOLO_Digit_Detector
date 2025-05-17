@@ -14,6 +14,9 @@ class_map = {
     6: '4', 7: '5', 8: '6', 9: '7', 10: '8', 11: '9'
 }
 # === Removing Outliers===
+def is_one_decimal_float(x):
+    return isinstance(x, float) and float(x * 10).is_integer() and not float(x).is_integer()
+# === Removing Outliers===
 def remove_outliers_iqr(df, y_col):
     # Compute Q1 (25th percentile) and Q3 (75th percentile)
     Q1 = df[y_col].quantile(0.15)
@@ -135,8 +138,11 @@ if uploaded_file:
     df = df.dropna(subset=["prediction"])  # Optional but recommended
     df = remove_outliers_iqr(df, "prediction")
     df = df.drop(columns="has_decimal")
-    sns.histplot(df["prediction"], kde=True)
-
+    # === New filtering: Keep only floats with exactly one decimal place ===
+    df = df[df["prediction"].apply(is_one_decimal_float)]
+    
+    sns.histplot(df["prediction"] , kde = True)
+    plt.show()
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     excel_path = f"digit_predictions_{timestamp}.xlsx"
     df.to_excel(excel_path, index=False)
